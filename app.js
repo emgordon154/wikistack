@@ -12,9 +12,8 @@ models.db.sync({force: true})
   .catch(console.error)
 
 
-const {router, userRouter, wikiRouter} = require('./routes');
+const {router} = require('./routes');
 
-app.use('/wiki', wikiRouter);
-app.use('/user', userRouter);
+
 app.use('/', router);
 
