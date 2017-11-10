@@ -12,6 +12,13 @@ const Page = db.define('page', {
         type: Sequelize.STRING,
         allowNull: false,
     },
+    route: {
+        type: Sequelize.STRING,
+        get () {
+            const urlTitle = this.getDataValue('urlTitle');
+            return '/wiki/' + urlTitle
+        }
+    },
     content: {
         type: Sequelize.TEXT,
         allowNull: false
