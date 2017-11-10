@@ -1,9 +1,13 @@
-const app = require('express');
+const express = require('express');
+const app = express();
 const morgan = require('morgan');
 const bodyParser = require('body-parser');
+const nunjucks = require('nunjucks');
+const models = require('./models');
 
-
-const db = require('./models');
+app.engine('html', nunjucks.render);
+app.set('view engine', 'html');
+nunjucks.configure('views', { noCache: true });
 
 models.db.sync({force: true})
   .then(function() {
