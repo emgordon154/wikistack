@@ -26,6 +26,8 @@ models.db.sync({})
 
 const {router} = require('./routes');
 
+app.use(express.static('static'))
+
 app.use(bodyParser.urlencoded({extended: false}))
 app.use(bodyParser.json())
 app.get('/', function(req,res,next) {
