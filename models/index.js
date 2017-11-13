@@ -64,6 +64,8 @@ const User = db.define('user', {
     }
 });
 
+Page.belongsTo(User, {as: 'author'});
+
 module.exports = {
     db: db,
     Page: Page,
