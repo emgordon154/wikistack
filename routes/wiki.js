@@ -12,13 +12,13 @@ wikiRouter.post('/', function(req, res, next) {
   var page = Page.build({
     
     title: title,
-    content: content
+    content: content,
   });
 
   // STUDENT ASSIGNMENT:
   // make sure we only redirect *after* our save is complete!
   // note: `.save` returns a promise or it can take a callback.
-  page.save().then( () => res.redirect('/'));
+  page.save().then( () => res.json(page));
   // -> after save -> res.redirect('/');
 });
 
@@ -29,6 +29,20 @@ wikiRouter.get('/', function (req, res, next){
 wikiRouter.get('/add', function (req, res, next){
   res.render('addpage');
 });
+
+wikiRouter.get('/:urlTitle', function(req, res, next){
+  Page.findOne({
+    where: {
+      urlTitle: req.params.urlTitle
+    }
+  }).then(function(foundPage){
+    res.render('wikipage', {
+      TITLE: foundPage.title
+    });
+  })
+  .catch(next);
+})
+
 
 module.exports = {
   wikiRouter: wikiRouter

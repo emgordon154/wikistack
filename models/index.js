@@ -7,19 +7,12 @@ const Page = db.define('page', {
     title: {
         type: Sequelize.STRING,
         allowNull: false,
-        validate: {notEmpty: true},
+        validate: { notEmpty: true },
     },
     urlTitle: {
         //validate: {isUrl: true, notEmpty: true},
         type: Sequelize.STRING,
         allowNull: false,
-    },
-    route: {
-        type: Sequelize.STRING,
-        get () {
-            const urlTitle = this.getDataValue('urlTitle');
-            return '/wiki/' + urlTitle
-        }
     },
     content: {
         type: Sequelize.TEXT,
@@ -34,21 +27,26 @@ const Page = db.define('page', {
         defaultValue: Sequelize.NOW
     },
 }, {
-    hooks: {
-        beforeValidate: (page, options) => page.setDataValue('urlTitle', generateUrlTitle(page.getDataValue('title')))
-    }
-});
+        hooks: {
+            beforeValidate: (page, options) => page.setDataValue('urlTitle', generateUrlTitle(page.getDataValue('title'))),
+        },
+        getterMethods: {
+            route() {
+                return '/wiki/' + this.urlTitle
+            }
+        },
+    });
 
-function generateUrlTitle (title) {
+function generateUrlTitle(title) {
     if (title) {
-      // Removes all non-alphanumeric characters from title
-      // And make whitespace underscore
-      return title.replace(/\s+/g, '_').replace(/\W/g, '');
+        // Removes all non-alphanumeric characters from title
+        // And make whitespace underscore
+        return title.replace(/\s+/g, '_').replace(/\W/g, '');
     } else {
-      // Generates random 5 letter string
-      return Math.random().toString(36).substring(2, 7);
+        // Generates random 5 letter string
+        return Math.random().toString(36).substring(2, 7);
     }
-  }
+}
 
 const User = db.define('user', {
     name: {
