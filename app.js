@@ -19,13 +19,17 @@ models.db.sync({})
 .then(function () {
     // make sure to replace the name below with your express app
     app.listen(3000, function () {
-        console.log('Server is listening on port 3001!');
+        console.log('Server is listening on port 3000!');
     });
 })
 .catch(console.error);
 
 const {router} = require('./routes');
 
-
+app.use(bodyParser.urlencoded({extended: false}))
+app.use(bodyParser.json())
+app.get('/', function(req,res,next) {
+    res.render('index')
+})
 app.use('/', router);
 
